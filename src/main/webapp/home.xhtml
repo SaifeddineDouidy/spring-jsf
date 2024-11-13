@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core">
+
+<h:head>
+    <title>Users List</title>
+</h:head>
+
+<h:body>
+    <h2>Users</h2>
+    <h:form>
+        <h:dataTable value="#{userBean.users}" var="user">
+            <h:column>
+                <f:facet name="header">Name</f:facet>
+                #{user.name}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Email</f:facet>
+                #{user.email}
+            </h:column>
+        </h:dataTable>
+    </h:form>
+</h:body>
+</html>
