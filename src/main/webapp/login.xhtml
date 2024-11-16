@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+<h:head>
+    <title>Login</title>
+</h:head>
+<h:body>
+    <h:form>
+        <h3>Login</h3>
+
+        <!-- Username Field -->
+        <h:outputLabel for="username" value="Username: " />
+        <h:inputText id="username" value="#{loginBean.email}" required="true" />
+        <h:message for="username" style="color:red" />
+
+        <!-- Password Field -->
+        <h:outputLabel for="password" value="Password: " />
+        <h:inputSecret id="password" value="#{loginBean.password}" required="true" />
+        <h:message for="password" style="color:red" />
+
+        <!-- Submit Button -->
+        <h:commandButton value="Login" action="#{loginBean.login}" />
+
+        <!-- Error Message -->
+        <h:messages globalOnly="true" style="color:red" />
+    </h:form>
+</h:body>
+</html>

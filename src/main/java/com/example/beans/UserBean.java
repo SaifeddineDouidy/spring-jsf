@@ -21,7 +21,7 @@ public class UserBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        users = userService.getAllUsers();
+//       users = userService.getAllUsers();
     }
 
     public List<User> getUsers() {

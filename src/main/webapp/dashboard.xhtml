@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core">
+
+<h:head>
+    <title>Dashboard</title>
+</h:head>
+
+<h:body>
+    <h2>Users</h2>
+    <h:form>
+        <h:dataTable value="#{loginBean.email}" var="user">
+            <h:column>
+                <f:facet name="header">Your Email</f:facet>
+                #{loginBean.email}
+            </h:column>
+        </h:dataTable>
+    </h:form>
+</h:body>
+</html>

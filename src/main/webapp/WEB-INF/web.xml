@@ -4,18 +4,18 @@
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
          version="6.0">
 
-  <!-- Spring Context -->
+  <!-- Spring Context Configuration -->
   <context-param>
     <param-name>contextConfigLocation</param-name>
     <param-value>/WEB-INF/spring/applicationContext.xml</param-value>
   </context-param>
 
-  <!-- Spring Listener -->
+  <!-- Spring Context Listener -->
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
 
-  <!-- JSF Configuration -->
+  <!-- JSF Servlet Configuration -->
   <servlet>
     <servlet-name>Faces Servlet</servlet-name>
     <servlet-class>jakarta.faces.webapp.FacesServlet</servlet-class>
@@ -26,11 +26,12 @@
     <url-pattern>*.xhtml</url-pattern>
   </servlet-mapping>
 
-  <!-- Weld Servlet listener for CDI -->
+  <!-- Weld Servlet Listener for CDI -->
   <listener>
     <listener-class>org.jboss.weld.environment.servlet.Listener</listener-class>
   </listener>
 
+  <!-- Default Welcome File -->
   <welcome-file-list>
     <welcome-file>faces/home.xhtml</welcome-file>
   </welcome-file-list>
