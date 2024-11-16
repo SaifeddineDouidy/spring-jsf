@@ -28,7 +28,6 @@
       <artifactId>HikariCP</artifactId>
       <version>5.0.1</version>
     </dependency>
-
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-servlet</artifactId>
@@ -50,22 +49,17 @@
       <version>2.0.9</version>
     </dependency>
 
-
-    <!-- https://mvnrepository.com/artifact/jakarta.enterprise/jakarta.enterprise.cdi-api -->
+    <!-- CDI (Weld) Dependencies -->
     <dependency>
       <groupId>jakarta.enterprise</groupId>
       <artifactId>jakarta.enterprise.cdi-api</artifactId>
       <version>4.0.1</version>
     </dependency>
-
     <dependency>
       <groupId>org.jboss.weld.servlet</groupId>
       <artifactId>weld-servlet-core</artifactId>
       <version>5.1.2.Final</version>
     </dependency>
-
-
-
 
     <!-- Spring Security Dependencies -->
     <dependency>
@@ -84,19 +78,6 @@
       <version>6.3.1</version>
     </dependency>
 
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-dbcp2</artifactId>
-      <version>2.9.0</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-tx</artifactId>
-      <version>6.1.12</version>
-    </dependency>
-
-
     <!-- Spring Dependencies -->
     <dependency>
       <groupId>org.springframework</groupId>
@@ -108,8 +89,13 @@
       <artifactId>spring-web</artifactId>
       <version>${spring.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-tx</artifactId>
+      <version>6.1.12</version>
+    </dependency>
 
-    <!-- JSF Implementation -->
+    <!-- JSF Dependencies -->
     <dependency>
       <groupId>org.glassfish</groupId>
       <artifactId>jakarta.faces</artifactId>
@@ -127,21 +113,17 @@
       <version>3.1.0</version>
     </dependency>
 
-
-    <!-- https://mvnrepository.com/artifact/org.hibernate.orm/hibernate-c3p0 -->
+    <!-- Hibernate Dependencies -->
     <dependency>
       <groupId>org.hibernate.orm</groupId>
       <artifactId>hibernate-c3p0</artifactId>
       <version>6.6.1.Final</version>
     </dependency>
-    <!-- https://mvnrepository.com/artifact/com.mchange/c3p0 -->
     <dependency>
       <groupId>com.mchange</groupId>
       <artifactId>c3p0</artifactId>
       <version>0.10.1</version>
     </dependency>
-
-
     <dependency>
       <groupId>org.springframework.data</groupId>
       <artifactId>spring-data-jpa</artifactId>
@@ -163,16 +145,31 @@
       <version>9.0.0</version>
     </dependency>
 
-
-
-    <!-- Jakarta EE Web API
+    <!-- Other Dependencies -->
     <dependency>
-      <groupId>jakarta.platform</groupId>
-      <artifactId>jakarta.jakartaee-web-api</artifactId>
-      <version>10.0.0</version>
-      <scope>provided</scope>
-    </dependency> -->
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-dbcp2</artifactId>
+      <version>2.9.0</version>
+    </dependency>
+    <!--<dependency>
+      <groupId>org.primefaces</groupId>
+      <artifactId>primefaces</artifactId>
+      <version>14.0.5</version>
+    </dependency>
+    <dependency>
+      <groupId>jakarta.faces</groupId>
+      <artifactId>jakarta.faces-api</artifactId>
+      <version>4.1.2</version>
+    </dependency>
+    <dependency>
+      <groupId>jakarta.el</groupId>
+      <artifactId>jakarta.el-api</artifactId>
+      <version>6.0.1</version>
+    </dependency>
+    -->
   </dependencies>
+
+
 
   <build>
     <finalName>jsf-spring-demo</finalName>

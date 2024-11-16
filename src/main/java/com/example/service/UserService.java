@@ -2,9 +2,14 @@ package com.example.service;
 
 import com.example.model.User;
 import com.example.repository.UserRepository;
+import com.example.custom.CustomUserDetails;
 import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
@@ -14,7 +19,8 @@ import java.util.Optional;
 public class UserService implements Serializable {
 
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
-    @Inject
+
+    @Autowired
     private UserRepository userRepository;
 
     /**
@@ -47,5 +53,26 @@ public class UserService implements Serializable {
      */
     public User findUserByEmail(String email) {
         return userRepository.findByEmail(email).orElse(null);
+    }
+
+    /**
+     * Get the user details by email.
+     *
+     * @param email The email of the user.
+     * @return the UserDetails object for the given email.
+     * @throws UsernameNotFoundException if the user is not found.
+     */
+    public UserDetails getUserDetails(String email) {
+        // Retrieve the user from the repository
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User with email " + email + " not found"));
+
+        // Map the user entity to a CustomUserDetails object
+        return new CustomUserDetails(
+                user.getId(),
+                user.getEmail(),
+                user.getPassword());
+                // IDK we can use roles in the future
+                //user.getRoles());
     }
 }

@@ -1,0 +1,44 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#login-form {
+    width: 300px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#login-panel {
+    width: 100%;
+}
+
+.ui-fluid .ui-panelgrid .ui-panelgrid-cell {
+    padding: 10px 0;
+}
+
+.error-message {
+    color: #ff0000;
+}
+
+.ui-button-raised {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.ui-button-success {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.ui-button-success:hover {
+    background-color: #218838;
+}
