@@ -1,14 +1,12 @@
 package com.example.beans;
 
 import com.example.service.UserService;
-import jakarta.annotation.ManagedBean;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
 import java.io.IOException;
 import java.io.Serializable;
 
-import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

@@ -1,21 +1,238 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="jakarta.faces.html"
-      xmlns:f="jakarta.faces.core">
+      >
 
 <h:head>
-    <title>Dashboard</title>
+    <title>Sessions Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.css" rel="stylesheet" />
+    <!-- Add Font Awesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
 </h:head>
 
-<h:body>
-    <h2>Users</h2>
-    <h:form>
-        <h:dataTable value="#{loginBean.email}" var="user">
-            <h:column>
-                <f:facet name="header">Your Email</f:facet>
-                #{loginBean.email}
-            </h:column>
-        </h:dataTable>
-    </h:form>
+<h:body class="bg-gray-50">
+    <!-- Top Navigation Bar -->
+    <nav class="bg-white border-b border-gray-200 px-4 py-2.5 fixed left-0 right-0 top-0 z-50">
+        <div class="flex flex-wrap justify-between items-center">
+            <!-- Logo and Brand -->
+            <div class="flex items-center">
+                <!--<img src="/api/placeholder/36/36" alt="Logo" class="h-9 mr-3" />-->
+                <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Faculté des Sciences</span>
+            </div>
+
+            <!-- Navigation Items -->
+            <div class="flex items-center justify-between space-x-4">
+                <h:form styleClass="flex items-center space-x-4">
+                    <!-- Dashboard -->
+                    <h:commandLink action="#{navigationBean.goToDashboard}"
+                                   styleClass="flex items-center px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg group">
+                        <i class="fas fa-chart-line mr-2"></i>
+                        <span>Dashboard</span>
+                    </h:commandLink>
+
+                    <!-- Exams -->
+                    <h:commandLink action="#{navigationBean.goToExams}"
+                                   styleClass="flex items-center px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg group">
+                        <i class="fas fa-file-alt mr-2"></i>
+                        <span>Exams</span>
+                    </h:commandLink>
+
+                    <!-- Surveillance -->
+                    <h:commandLink action="#{navigationBean.goToSurveillance}"
+                                   styleClass="flex items-center px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg group">
+                        <i class="fas fa-eye mr-2"></i>
+                        <span>Surveillance</span>
+                    </h:commandLink>
+
+                    <!-- Emploi -->
+                    <h:commandLink action="#{navigationBean.goToEmploi}"
+                                   styleClass="flex items-center px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg group">
+                        <i class="fas fa-briefcase mr-2"></i>
+                        <span>Emploi</span>
+                    </h:commandLink>
+
+                    <!-- Options -->
+                    <h:commandLink action="#{navigationBean.goToOptions}"
+                                   styleClass="flex items-center px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg group">
+                        <i class="fas fa-cog mr-2"></i>
+                        <span>Options</span>
+                    </h:commandLink>
+
+                    <!-- Departements -->
+                    <h:commandLink action="#{navigationBean.goToDepartements}"
+                                   styleClass="flex items-center px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg group">
+                        <i class="fas fa-building mr-2"></i>
+                        <span>Departements</span>
+                    </h:commandLink>
+
+                    <!-- Locaux -->
+                    <h:commandLink action="#{navigationBean.goToLocaux}"
+                                   styleClass="flex items-center px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg group">
+                        <i class="fas fa-door-open mr-2"></i>
+                        <span>Locaux</span>
+                    </h:commandLink>
+
+                    <!-- User Profile -->
+                    <button type="button"
+                            class="flex items-center ml-7 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg p-2"
+                            onclick="toggleUserMenu()">
+                        <i class="fas fa-user"></i>
+                    </button>
+
+                    <!-- User Dropdown Menu -->
+                    <div id="userMenu"
+                         class="hidden absolute right-4 top-14 z-50 bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
+                        <ul class="py-2 text-sm text-gray-700">
+                            <li>
+                                <h:commandLink value="Profile" action="#{navigationBean.goToProfile}"
+                                               styleClass="block px-4 py-2 hover:bg-gray-100" />
+                            </li>
+                            <li>
+                                <h:commandLink value="Settings" action="#{navigationBean.goToSettings}"
+                                               styleClass="block px-4 py-2 hover:bg-gray-100" />
+                            </li>
+                            <li>
+                                <h:commandLink value="Logout" action="#{navigationBean.logout}"
+                                               styleClass="block px-4 py-2 hover:bg-gray-100" />
+                            </li>
+                        </ul>
+                    </div>
+                </h:form>
+            </div>
+        </div>
+    </nav>
+    <!-- Main Content -->
+    <div class="p-4 mt-16">
+        <div class="container mx-auto">
+            <div class="mb-6">
+                <h1 class="text-2xl font-semibold text-gray-900">Sessions</h1>
+                <p class="text-gray-600">Gérer les sessions</p>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+                <!-- Exams Card -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex flex-col">
+                        <span class="text-gray-500 text-sm mb-2">Exams</span>
+                        <span class="text-3xl font-bold">7</span>
+                        <span class="text-gray-500 text-sm mt-2">Nombre total d'exams du dernier session</span>
+                    </div>
+                </div>
+
+                <!-- Enseignants Card -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex flex-col">
+                        <span class="text-gray-500 text-sm mb-2">Enseignants</span>
+                        <span class="text-3xl font-bold">268</span>
+                        <span class="text-gray-500 text-sm mt-2">Nombre total d'enseignants dans la faculté</span>
+                    </div>
+                </div>
+
+                <!-- Départements Card -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex flex-col">
+                        <span class="text-gray-500 text-sm mb-2">Nombre total de départements</span>
+                        <span class="text-3xl font-bold">7</span>
+                        <span class="text-green-500 text-sm mt-2">+19% par rapport au mois dernier</span>
+                    </div>
+                </div>
+
+                <!-- Surveillance Card -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex flex-col">
+                        <span class="text-gray-500 text-sm mb-2">Surveillance actuelle</span>
+                        <span class="text-3xl font-bold">0.22</span>
+                        <span class="text-gray-500 text-sm mt-2">Moyenne de surveillance par enseignant dans la dernière session par demi journée</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts and Recent Exams Section -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Chart Section -->
+                <div class="bg-white rounded-lg shadow p-6">
+
+                    <h3 class="text-lg font-semibold mb-4">Overview</h3>
+
+                    <div class="h-64">
+
+                        <!-- Column Chart Placeholder -->
+
+                        <div class="w-full h-full bg-gray-50 flex items-center justify-center">
+
+                            <div class="w-full px-4">
+
+                                <div class="flex justify-between space-x-4">
+
+                                    <div class="w-1/3 h-32 bg-blue-500"></div>
+
+                                    <div class="w-1/3 h-40 bg-blue-500"></div>
+
+                                    <div class="w-1/3 h-48 bg-blue-500"></div>
+
+                                </div>
+
+                                <div class="flex justify-between mt-2 text-sm text-gray-500">
+
+                                    <span>November 6th, 2024</span>
+
+                                    <span>November 7th, 2024</span>
+
+                                    <span>November 8th, 2024</span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+                <!-- Recent Exams Section -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-lg font-semibold mb-4">Exams récentes</h3>
+                    <p class="text-sm text-gray-500 mb-4">Les cinq dernier exams</p>
+
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-900">NA</span>
+                            <span class="text-gray-900">ANGLAIS</span>
+                            <span class="text-gray-900">culture et art skills</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-900">NA</span>
+                            <span class="text-gray-900">PHYS102</span>
+                            <span class="text-gray-900">langues etrangeres</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-900">NA</span>
+                            <span class="text-gray-900">ECHAGRAM</span>
+                            <span class="text-gray-900">mathematiques pour la chimie</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-900">NA</span>
+                            <span class="text-gray-900">ZAKARIA</span>
+                            <span class="text-gray-900">mecanique quantique</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-900">NA</span>
+                            <span class="text-gray-900">ELHADRAM</span>
+                            <span class="text-gray-900">chimie descriptive i/diagrammes de</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@9.0.3"></script>
+
+
 </h:body>
+
 </html>
