@@ -8,7 +8,7 @@ public class Session {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long sessionId;
+    private Long session_id;
 
     private String type;
 
@@ -18,12 +18,12 @@ public class Session {
     public Session() {}
 
     // Getters and Setters
-    public Long getSessionId() {
-        return sessionId;
+    public Long getSession_id() {
+        return session_id;
     }
 
-    public void setSessionId(Long sessionId) {
-        this.sessionId = sessionId;
+    public void setSession_id(Long sessionId) {
+        this.session_id = sessionId;
     }
 
     public String getType() {

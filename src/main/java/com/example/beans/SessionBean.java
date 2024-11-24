@@ -2,7 +2,6 @@ package com.example.beans;
 
 import com.example.model.Session;
 import com.example.service.SessionService;
-import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
@@ -19,7 +18,8 @@ public class SessionBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private int id;
+    private Long session_id;
+    private Long selectedSessionId;
     private String type;
     private String startDate;
     private String endDate;
@@ -29,6 +29,25 @@ public class SessionBean implements Serializable {
 
     @Inject
     private SessionService sessionService;
+
+
+
+
+    public Long getSession_id() {
+        return session_id;
+    }
+
+    public void setSession_id(Long session_id) {
+        this.session_id = session_id;
+    }
+
+    public Long getSelectedSessionId() {
+        return selectedSessionId;
+    }
+
+    public void setSelectedSessionId(Long selectedSessionId) {
+        this.selectedSessionId = selectedSessionId;
+    }
 
     public String getType() {
         return type;
@@ -61,8 +80,28 @@ public class SessionBean implements Serializable {
         return sessions;
     }
 
+    public Session getSelectedSession() {
+        return selectedSession;
+    }
 
+    public void setSelectedSession(Session selectedSession) {
+        this.selectedSession = selectedSession;
+    }
 
+    public void loadSelectedSession(Session session) {
+        if (session != null) {
+            selectedSession = session;
+            System.out.println("Selected session loaded: " + session.getSession_id());
+        } else {
+            System.out.println("Session is null in loadSelectedSession!");
+        }
+    }
+
+    public String goToSessionDashboard(Long sessionId) {
+        this.selectedSessionId = sessionId;
+        FacesContext.getCurrentInstance().getExternalContext().getFlash().put("session_id", sessionId);
+        return "SessionDashboard?faces-redirect=true";
+    }
 
 
     /**
@@ -70,30 +109,27 @@ public class SessionBean implements Serializable {
      */
     public void saveSession() {
         try {
-            // Check if all fields are filled
             if (type == null || type.trim().isEmpty()) {
-                addMessage("Type is required.");
+                addMessage("Type is required.", FacesMessage.SEVERITY_ERROR);
                 return;
             }
             if (startDate == null || startDate.trim().isEmpty()) {
-                addMessage("Start date is required.");
+                addMessage("Start date is required.", FacesMessage.SEVERITY_ERROR);
                 return;
             }
             if (endDate == null || endDate.trim().isEmpty()) {
-                addMessage("End date is required.");
+                addMessage("End date is required.", FacesMessage.SEVERITY_ERROR);
                 return;
             }
 
-            // Parse dates and validate logic
             LocalDate start = LocalDate.parse(startDate);
             LocalDate end = LocalDate.parse(endDate);
 
             if (start.isAfter(end)) {
-                addMessage("Start date cannot be after end date.");
+                addMessage("Start date cannot be after end date.", FacesMessage.SEVERITY_WARN);
                 return;
             }
 
-            // Create and save session
             Session session = new Session();
             session.setType(type);
             session.setStartDate(start);
@@ -101,23 +137,35 @@ public class SessionBean implements Serializable {
 
             sessionService.save(session);
 
-            // Reset fields and update session list
             type = null;
             startDate = null;
             endDate = null;
             sessions = sessionService.findAll();
 
-            addMessage("Session saved successfully.");
+            addMessage("Session saved successfully.", FacesMessage.SEVERITY_INFO);
         } catch (Exception e) {
             e.printStackTrace();
-            addMessage("An error occurred while saving the session.");
+            addMessage("An error occurred while saving the session.", FacesMessage.SEVERITY_FATAL);
         }
     }
 
 
+    public void deleteSession(Session session) {
+        try {
+            // Delete the session from the database
+            sessionService.delete(session.getSession_id());
+
+            // Refresh the list of sessions
+            sessions = sessionService.findAll();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("An error occurred while deleting the session.");
+        }
+    }
 
 
-    private void addMessage(String message) {
+    private void addMessage(String message, FacesMessage.Severity severityError) {
         FacesMessage facesMessage;
         if (message.contains("successfully")) {
             facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, message, null);
