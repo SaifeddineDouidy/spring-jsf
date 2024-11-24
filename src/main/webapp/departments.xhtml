@@ -69,9 +69,9 @@
                         <ul class="py-2 text-sm text-gray-700">
                             <li>
                                 <h:commandLink value="Modify"
-                                               action="#{departmentBean.prepareModifyDepartment(department)}"
-                                               class="block px-4 py-2 text-indigo-500 hover:bg-indigo-100"
-                                               onclick="document.getElementById('modifyDepartmentModal').classList.remove('hidden');"/>
+                                               class="block px-4 py-2 text-indigo-500 hover:bg-indigo-100">
+                                    <f:ajax listener="#{departmentBean.prepareModifyDepartment(department)}" render=":modifyDepartmentModal" onevent="handlePrepareUpdate"/>
+                                </h:commandLink>
                             </li>
                             <li>
                                 <h:commandLink value="Delete" action="#{departmentBean.deleteDepartment(department)}"
@@ -157,5 +157,23 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/flowbite@1.6.0/dist/flowbite.min.js"></script>
+<script>
+    function handlePrepareUpdate(data) {
+        if (data.status === 'success') {
+            document.getElementById('modifyDepartmentModal').classList.remove('hidden');
+        }
+    }
+
+    function closeUpdateModal() {
+        document.getElementById('modifyDepartmentModal').classList.add('hidden');
+    }
+
+    function handleUpdateResponse(data) {
+        if (data.status === 'complete') {
+            closeUpdateModal();
+            location.reload();
+        }
+    }
+</script>
 </body>
 </html>

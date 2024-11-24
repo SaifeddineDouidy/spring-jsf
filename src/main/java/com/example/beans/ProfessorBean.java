@@ -112,32 +112,25 @@ public class ProfessorBean implements Serializable {
     }
 
     public void prepareModifyProfessor(Professor professor) {
-        selectedProfessor.setId(professor.getId());
-        selectedProfessor.setName(professor.getName());
-        selectedProfessor.setEmail(professor.getEmail());
-        selectedProfessor.setDispense(professor.isDispense());
-        selectedProfessor.setDepartment(professor.getDepartment()); // Ensure department is set
+        selectedProfessor = professor;
+        newProfessorName = professor.getName();
+        newProfessorEmail = professor.getEmail();
+        newProfessorDispense = professor.isDispense();
     }
 
 
 
     public void modifyProfessor() {
-        // Ensure email is not null
-        if (selectedProfessor.getEmail() == null || selectedProfessor.getEmail().trim().isEmpty()) {
-            // Handle the error, maybe show a validation message
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Email is required", null));
-            return;  // Prevent further processing
+        if (selectedProfessor != null && newProfessorName != null && newProfessorEmail != null) {
+            selectedProfessor.setName(newProfessorName);
+            selectedProfessor.setEmail(newProfessorEmail);
+            selectedProfessor.setDispense(newProfessorDispense);
+            professorService.updateProfessor(selectedProfessor);
+            newProfessorName = "";
+            newProfessorEmail = null;
+            newProfessorDispense = false;
+            selectedProfessor = null;
         }
-
-        // Set department if not already set
-        if (selectedProfessor.getDepartment() == null) {
-            Department department = departmentService.getDepartmentById(selectedDepartmentId);
-            selectedProfessor.setDepartment(department);
-        }
-
-        // Proceed with update
-        professorService.updateProfessor(selectedProfessor);
-        resetForm();
     }
 
 

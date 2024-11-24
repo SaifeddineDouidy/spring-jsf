@@ -21,6 +21,8 @@ public class Professor {
     @JoinColumn(name = "department_id", nullable = false)
     private Department department;
 
+
+
     // Getters and setters
     public Long getId() {
         return id;
