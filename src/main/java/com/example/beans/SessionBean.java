@@ -110,15 +110,15 @@ public class SessionBean implements Serializable {
     public void saveSession() {
         try {
             if (type == null || type.trim().isEmpty()) {
-                addMessage("Type is required.", FacesMessage.SEVERITY_ERROR);
+                addMessage("Type est requis.", FacesMessage.SEVERITY_ERROR);
                 return;
             }
             if (startDate == null || startDate.trim().isEmpty()) {
-                addMessage("Start date is required.", FacesMessage.SEVERITY_ERROR);
+                addMessage("Date de début est requise.", FacesMessage.SEVERITY_ERROR);
                 return;
             }
             if (endDate == null || endDate.trim().isEmpty()) {
-                addMessage("End date is required.", FacesMessage.SEVERITY_ERROR);
+                addMessage("Date de fin est requise.", FacesMessage.SEVERITY_ERROR);
                 return;
             }
 
@@ -126,7 +126,7 @@ public class SessionBean implements Serializable {
             LocalDate end = LocalDate.parse(endDate);
 
             if (start.isAfter(end)) {
-                addMessage("Start date cannot be after end date.", FacesMessage.SEVERITY_WARN);
+                addMessage("La date de début ne peut pas être après la date de fin.", FacesMessage.SEVERITY_WARN);
                 return;
             }
 
@@ -142,10 +142,10 @@ public class SessionBean implements Serializable {
             endDate = null;
             sessions = sessionService.findAll();
 
-            addMessage("Session saved successfully.", FacesMessage.SEVERITY_INFO);
+            addMessage("Session enregistrée avec succès.", FacesMessage.SEVERITY_INFO);
         } catch (Exception e) {
             e.printStackTrace();
-            addMessage("An error occurred while saving the session.", FacesMessage.SEVERITY_FATAL);
+            addMessage("Une erreur s’est produite lors de l’enregistrement de la session.", FacesMessage.SEVERITY_FATAL);
         }
     }
 
@@ -167,7 +167,7 @@ public class SessionBean implements Serializable {
 
     private void addMessage(String message, FacesMessage.Severity severityError) {
         FacesMessage facesMessage;
-        if (message.contains("successfully")) {
+        if (message.contains("succès")) {
             facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, message, null);
         } else {
             facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, message, null);
