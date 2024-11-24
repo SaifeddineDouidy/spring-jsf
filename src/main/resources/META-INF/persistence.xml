@@ -11,6 +11,8 @@
 
         <!-- Managed Entity Classes -->
         <class>com.example.model.User</class>
+        <class>com.example.model.Session</class>
+
 
         <!-- Database Connection Properties -->
         <properties>

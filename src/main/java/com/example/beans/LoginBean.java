@@ -92,7 +92,7 @@ public class LoginBean implements Serializable {
                 this.userDetails = userService.getUserDetails(email);
 
                 // Redirect to the dashboard page after successful login
-                FacesContext.getCurrentInstance().getExternalContext().redirect("dashboard.xhtml");
+                FacesContext.getCurrentInstance().getExternalContext().redirect("sessions.xhtml");
             } else {
                 // Handle invalid credentials (e.g., show error message)
                 FacesContext.getCurrentInstance().addMessage(null,
