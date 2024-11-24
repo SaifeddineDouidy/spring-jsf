@@ -23,6 +23,7 @@ public class UserService implements Serializable {
     @Autowired
     private UserRepository userRepository;
 
+
     /**
      * Authenticate the user using email and raw password.
      *

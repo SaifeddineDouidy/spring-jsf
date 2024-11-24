@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -16,12 +17,13 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/login.xhtml", "/resources/**").permitAll() // Allow access to log and resources
-                        .anyRequest().authenticated() // All other pages require authentication
+                        .requestMatchers("/login.xhtml", "/resources/**").permitAll() // Allow access to login and resources
+                        .anyRequest().authenticated() // Require authentication for all other pages
                 )
                 .formLogin(form -> form
                         .loginPage("/login.xhtml") // Custom login page
-                        .permitAll() // Allow access to the login page for everyone
+                        .permitAll() // Allow access to login page for everyone
+                        .defaultSuccessUrl("/home.xhtml", true) // Redirect to home page after successful login
                 )
                 .logout(logout -> logout
                         .logoutSuccessUrl("/login.xhtml?logout") // Redirect to login page on logout
@@ -31,19 +33,19 @@ public class SecurityConfig {
         return http.build();
     }
 
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
+
+
 
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
         AuthenticationManagerBuilder auth = http.getSharedObject(AuthenticationManagerBuilder.class);
-        auth.inMemoryAuthentication()
-                .withUser("user") // Username
-                .password("{noop}password") // Password with {noop} prefix (no encryption)
-                .roles("USER") // User role
-                .and()
-                .withUser("admin") // Admin user for testing
-                .password("{noop}admin") // Admin password
-                .roles("ADMIN"); // Admin role
 
         return auth.build();
     }
+
+
 }
