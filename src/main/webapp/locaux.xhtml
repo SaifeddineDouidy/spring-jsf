@@ -6,7 +6,7 @@
 
 <h:head>
     <title>Locaux</title>
-    <!-- Add Tailwind CSS CDN -->
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
@@ -15,13 +15,13 @@
 
     <nav class="bg-white border-b border-gray-200 px-4 py-2.5 fixed left-0 right-0 top-0 z-50">
         <div class="flex flex-wrap justify-between items-center">
-            <!-- Logo and Brand -->
+            <!-- Logo  -->
             <div class="flex items-center">
 
                 <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white"><img src="image/logo.png" style="height: 60px; margin-left: 20px;" alt="logo"/></span>
             </div>
 
-            <!-- Navigation Items -->
+            <!-- Items Navigation  -->
             <div class="flex items-center justify-between space-x-4">
                 <h:form styleClass="flex items-center space-x-4">
                     <!-- Dashboard -->
@@ -73,14 +73,14 @@
                         <span>Locaux</span>
                     </h:commandLink>
 
-                    <!-- User Profile -->
+                    <!-- Profile d'utilisateur -->
                     <button type="button"
                             class="flex items-center ml-7 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg p-2"
                             onclick="toggleUserMenu()">
                         <i class="fas fa-user"></i>
                     </button>
 
-                    <!-- User Dropdown Menu -->
+                    <!-- Dropdown Menu d'utilisateur -->
                     <div id="userMenu"
                          class="hidden absolute right-4 top-14 z-50 bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
                         <ul class="py-2 text-sm text-gray-700">
@@ -104,7 +104,7 @@
     </nav>
 
     <h:form style="margin-top: 100px">
-        <!-- Header -->
+
         <div class="flex justify-between items-center mb-8">
             <h1 class="text-2xl font-bold">Locaux (#{localBean.locaux.size()})</h1>
             <button type="button"
@@ -114,16 +114,17 @@
             </button>
         </div>
 
-        <!-- Search Bar -->
+        <!-- Bar de recherche -->
         <div class="mb-4">
             <h:inputText id="searchBar" value="#{localBean.filter}"
                          placeholder="Rechercher par Nom, Taille, ou Type"
                          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-300">
+                <f:passThroughAttribute name="placeholder" value="Rechercher par Nom, Taille, ou Type" />
                 <f:ajax event="keyup" render="locauxTable" />
             </h:inputText>
         </div>
 
-        <!-- Table -->
+        <!-- Tableau -->
         <div class="bg-white shadow-md rounded-lg overflow-hidden">
             <div class="bg-white shadow-md rounded-lg overflow-hidden">
                 <h:dataTable id="locauxTable" value="#{localBean.locaux}" var="local"
@@ -151,12 +152,25 @@
                         </f:facet>
                         <div class="px-4 py-2">#{local.type}</div>
                     </h:column>
+                    <h:column>
+                        <h:commandLink styleClass="text-blue-500 hover:text-blue-700 mr-2">
+                            <f:ajax listener="#{localBean.prepareUpdate(local)}" render=":updateForm" onevent="handlePrepareUpdate"/>
+                            <i class="fas fa-edit"></i>
+                        </h:commandLink>
+                        <h:commandLink action="#{localBean.deleteLocal(local)}"
+                                       onclick="return confirm('Voulez vous vraiment supprimer ce local?');"
+                                       styleClass="delete-btn">
+                            <i class="fas fa-trash text-red-500"></i>
+                            <f:ajax execute="@this" render=":locauxTable" />
+                        </h:commandLink>
+                    </h:column>
+
                 </h:dataTable>
             </div>
 
         </div>
 
-        <!-- Modal for Adding a New Local -->
+        <!-- Modal d'ajout -->
         <div id="addLocalModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
             <div class="bg-white p-8 rounded-lg shadow-lg w-96">
                 <h2 class="text-xl font-bold mb-4">Ajouter un Local</h2>
@@ -193,6 +207,87 @@
                 </div>
             </div>
         </div>
+
+    </h:form>
+
+        <!-- Modal de mise a jour -->
+    <div id="updateModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-96">
+            <h2 class="text-xl font-bold mb-4">Modifier un Local</h2>
+            <h:form id="updateForm">
+                <h:inputHidden id="updateId" value="#{localBean.selectedLocal.id}" />
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700">Nom</label>
+                    <h:inputText id="updateNom"
+                                 value="#{localBean.selectedLocal.nom}"
+                                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-300">
+                        <f:ajax />
+                    </h:inputText>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700">Taille</label>
+                    <h:inputText id="updateTaille"
+                                 value="#{localBean.selectedLocal.taille}"
+                                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-300">
+                        <f:ajax />
+                    </h:inputText>
+                </div>
+
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700">Type</label>
+                <h:selectOneRadio id="updateType"
+                                  value="#{localBean.selectedLocal.type}"
+                                  layout="lineDirection"
+                                  class="flex space-x-4">
+                <f:selectItem itemValue="salle" itemLabel="Salle" />
+                <f:selectItem itemValue="amphi" itemLabel="Amphi" />
+                <f:ajax />
+            </h:selectOneRadio>
+        </div>
+
+
+        <div class="flex justify-end">
+                    <button type="button"
+                            class="bg-gray-500 text-white px-4 py-2 rounded mr-2 hover:bg-gray-600"
+                            onclick="closeUpdateModal()">
+                        Annuler
+                    </button>
+                    <h:commandButton value="Enregistrer"
+                                     action="#{localBean.updateLocal}"
+                                     class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                        <f:ajax execute="@form" render=":locauxTable" onevent="handleUpdateResponse"/>
+                    </h:commandButton>
+                </div>
+            </h:form>
+        </div>
+    </div>
+
+
+    <script>
+        function handlePrepareUpdate(data) {
+            if (data.status === 'success') {
+                document.getElementById('updateModal').classList.remove('hidden');
+            }
+        }
+
+        function closeUpdateModal() {
+            document.getElementById('updateModal').classList.add('hidden');
+        }
+
+        function handleUpdateResponse(data) {
+            if (data.status === 'complete') {
+                closeUpdateModal();
+                location.reload();
+            }
+        }
+    </script>
+
+    <h:form id="remoteForm">
+        <h:commandButton id="prepareUpdateButton" style="display: none;">
+            <f:ajax listener="#{localBean.prepareUpdate}" render="updateForm" />
+        </h:commandButton>
     </h:form>
 </h:body>
 
