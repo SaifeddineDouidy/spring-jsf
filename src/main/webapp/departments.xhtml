@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+    <title>Departments</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.0/dist/tailwind.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@1.6.0/dist/flowbite.min.css" rel="stylesheet"/>
+</h:head>
+<body class="bg-gray-100 min-h-screen">
+<div class="container mx-auto px-4 py-8">
+    <!-- Header Section -->
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-900">Departments List</h1>
+        <button type="button"
+                onclick="document.getElementById('addDepartmentModal').classList.remove('hidden');"
+                class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
+            Add Department
+        </button>
+    </div>
+
+    <!-- Departments Table -->
+    <div class="bg-white rounded-lg shadow overflow-hidden">
+        <h:outputText value="Departments size: #{departmentBean.departments.size()}"
+                      class="block text-gray-600 px-6 py-4"/>
+
+        <h:dataTable value="#{departmentBean.departments}" var="department"
+                     class="min-w-full divide-y divide-gray-200">
+            <h:column>
+                <f:facet name="header">
+                    <div class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</div>
+                </f:facet>
+                <div class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    #{department.id}
+                </div>
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">
+                    <div class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Department Name</div>
+                </f:facet>
+                <div class="px-6 py-4 whitespace-nowrap text-sm text-indigo-600 font-medium hover:text-indigo-800">
+                    <h:link outcome="professors" value="#{department.departmentName}">
+                        <f:param name="departmentId" value="#{department.id}"/>
+                        <f:param name="departmentName" value="#{department.departmentName}"/>
+                    </h:link>
+                </div>
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">
+                    <div class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</div>
+                </f:facet>
+                <div class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <button id="dropdownMenuButton-#{department.id}" data-dropdown-toggle="dropdownMenu-#{department.id}"
+                            class="text-gray-500 hover:bg-gray-100 hover:text-gray-900 rounded-lg focus:outline-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                             stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 10h12M6 14h12m-6 4h6m-6-8h6"/>
+                        </svg>
+                    </button>
+
+                    <!-- Dropdown Menu -->
+                    <div id="dropdownMenu-#{department.id}" class="hidden bg-white rounded-lg shadow w-48 absolute mt-2">
+                        <ul class="py-2 text-sm text-gray-700">
+                            <li>
+                                <h:commandLink value="Modify"
+                                               action="#{departmentBean.prepareModifyDepartment(department)}"
+                                               class="block px-4 py-2 text-indigo-500 hover:bg-indigo-100"
+                                               onclick="document.getElementById('modifyDepartmentModal').classList.remove('hidden');"/>
+                            </li>
+                            <li>
+                                <h:commandLink value="Delete" action="#{departmentBean.deleteDepartment(department)}"
+                                               class="block px-4 py-2 text-red-500 hover:bg-indigo-100">
+                                    <f:ajax execute="@this" render=":data-table"/>
+                                </h:commandLink>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </h:column>
+        </h:dataTable>
+    </div>
+</div>
+
+<!-- Add Department Modal -->
+<div id="addDepartmentModal" class="hidden fixed inset-0 flex items-center justify-center z-50">
+    <div class="relative w-full max-w-md bg-white rounded-lg shadow-lg p-6">
+        <h:form class="space-y-6">
+            <div class="flex justify-between items-center pb-3">
+                <h3 class="text-xl font-semibold text-gray-900">Add New Department</h3>
+                <button type="button"
+                        onclick="document.getElementById('addDepartmentModal').classList.add('hidden')"
+                        class="text-gray-400 hover:text-gray-500">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <h:outputLabel for="newDepartmentName" value="Department Name"
+                                   class="block text-sm font-medium text-gray-700"/>
+                    <h:inputText id="newDepartmentName" value="#{departmentBean.newDepartmentName}" required="true"
+                                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500"/>
+                    <h:message for="newDepartmentName" class="text-red-500 text-sm"/>
+                </div>
+                <div class="flex justify-end space-x-4">
+                    <button type="button" class="bg-gray-300 px-4 py-2 rounded-md"
+                            onclick="document.getElementById('addDepartmentModal').classList.add('hidden')">Cancel</button>
+                    <h:commandButton value="Add" action="#{departmentBean.addDepartment}"
+                                     class="bg-indigo-500 text-white px-4 py-2 rounded-md"/>
+                </div>
+            </div>
+        </h:form>
+    </div>
+</div>
+
+
+<!-- Modify Department Modal -->
+<div id="modifyDepartmentModal"
+     class="hidden fixed inset-0 flex items-center justify-center z-50">
+    <div class="relative w-full max-w-md bg-white rounded-lg shadow-lg p-6">
+        <h:form class="space-y-6">
+            <div class="flex justify-between items-center pb-3">
+                <h3 class="text-xl font-semibold text-gray-900">Modify Department</h3>
+                <button type="button" onclick="document.getElementById('modifyDepartmentModal').classList.add('hidden')"
+                        class="text-gray-400 hover:text-gray-500">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <h:outputLabel for="modifyDepartmentName" value="Department Name"
+                                   class="block text-sm font-medium text-gray-700"/>
+                    <h:inputText id="modifyDepartmentName" value="#{departmentBean.newDepartmentName}" required="true"
+                                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500"/>
+                    <h:message for="modifyDepartmentName" class="text-red-500 text-sm"/>
+                </div>
+                <div class="flex justify-end space-x-4">
+                    <button type="button" class="bg-gray-300 px-4 py-2 rounded-md"
+                            onclick="document.getElementById('modifyDepartmentModal').classList.add('hidden');">Cancel</button>
+                    <h:commandButton value="Save" action="#{departmentBean.modifyDepartment}"
+                                     class="bg-indigo-500 text-white px-4 py-2 rounded-md"/>
+                </div>
+            </div>
+        </h:form>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/flowbite@1.6.0/dist/flowbite.min.js"></script>
+</body>
+</html>
