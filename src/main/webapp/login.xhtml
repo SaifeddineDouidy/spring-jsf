@@ -33,44 +33,11 @@
             <!-- Submit Button -->
             <div class="flex justify-between items-center">
                 <h:commandButton value="Login" action="#{loginBean.login}" class="bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" />
-                <button type="button" class="text-indigo-500 hover:text-indigo-600 font-medium" data-modal-toggle="defaultModal">Launch modal</button>
             </div>
 
             <!-- Error Message -->
             <h:messages globalOnly="true" style="color:red" class="mt-4" />
         </h:form>
-    </div>
-</div>
-
-<!-- Modal -->
-<div id="defaultModal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
-    <div class="relative w-full h-full max-w-2xl md:h-auto">
-        <!-- Modal content -->
-        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-            <!-- Modal header -->
-            <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                    Modal Title
-                </h3>
-                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="defaultModal">
-                    <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" d="M14.293 5.293a1 1 0 011.414 1.414L7.414 15H13a1 1 0 110 2H6a1 1 0 01-.707-1.707l7.879-8.586a1 1 0 011.414 1.414L8.414 13h5.5a1 1 0 110 2H8a1 1 0 01-.707-.293l-4-4a1 1 0 111.414-1.414L8 12.414 12.586 6.828a1 1 0 111.414 1.414L9 14l5.707-5.707z" clip-rule="evenodd"></path>
-                    </svg>
-                    <span class="sr-only">Close modal</span>
-                </button>
-            </div>
-            <!-- Modal body -->
-            <div class="p-6 space-y-6">
-                <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                    Here is the content of your modal.
-                </p>
-            </div>
-            <!-- Modal footer -->
-            <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-                <button type="button" class="btn btn-secondary" data-modal-toggle="defaultModal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
     </div>
 </div>
 

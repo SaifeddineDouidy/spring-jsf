@@ -100,7 +100,7 @@ public class SessionBean implements Serializable {
     public String goToSessionDashboard(Long sessionId) {
         this.selectedSessionId = sessionId;
         FacesContext.getCurrentInstance().getExternalContext().getFlash().put("session_id", sessionId);
-        return "SessionDashboard?faces-redirect=true";
+        return "dashboard?faces-redirect=true";
     }
 
 

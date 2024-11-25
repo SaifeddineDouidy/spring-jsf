@@ -31,7 +31,7 @@ public class NavigationBean implements Serializable {
     }
 
     public String goToDepartements() {
-        return "departements?faces-redirect=true";
+        return "departments?faces-redirect=true";
     }
 
     public String goToLocaux() {
