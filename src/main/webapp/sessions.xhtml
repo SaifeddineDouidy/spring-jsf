@@ -1,193 +1,224 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="jakarta.faces.html"
-      xmlns:f="jakarta.faces.core">
-
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 <h:head>
     <title>Sessions</title>
-    <!-- Tailwind CSS CDN -->
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
 </h:head>
+<body class="bg-gray-100 min-h-screen">
 
-<h:body class="bg-gray-100 p-8">
-    <!-- Navigation Bar -->
-    <nav class="bg-white border-b border-gray-200 px-4 py-2.5 fixed left-0 right-0 top-0 z-50">
-        <div class="flex flex-wrap justify-between items-center">
-            <!-- Logo -->
-            <div class="flex items-center">
+<!-- Navigation -->
+<nav class="bg-white border-b border-gray-200 px-4 py-2.5 fixed left-0 right-0 top-0 z-50">        <div class="flex flex-wrap justify-between items-center">
+    <!-- Logo  -->
+    <div class="flex items-center">
                 <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
                     <img src="image/logo.png" style="height: 60px; margin-left: 20px;" alt="logo"/>
                 </span>
+    </div>
+
+    <!-- Items Navigation  -->
+    <div class="flex items-center justify-between space-x-4">
+        <h:form styleClass="flex items-center space-x-4">
+
+            <!-- User Profile -->
+            <button type="button"
+                    class="flex items-center ml-7 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg p-2"
+                    onclick="toggleUserMenu()">
+                <i class="fas fa-user"></i>
+            </button>
+
+            <!-- User Dropdown Menu -->
+            <div id="userMenu"
+                 class="hidden absolute right-4 top-14 z-50 bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
+                <ul class="py-2 text-sm text-gray-700">
+                    <li>
+                        <h:commandLink value="Profile" action="#{navigationBean.goToProfile}"
+                                       styleClass="block px-4 py-2 hover:bg-gray-100" />
+                    </li>
+                    <li>
+                        <h:commandLink value="Settings" action="#{navigationBean.goToSettings}"
+                                       styleClass="block px-4 py-2 hover:bg-gray-100" />
+                    </li>
+                    <li>
+                        <h:commandLink value="Logout" action="#{loginBean.logout}"
+                                       styleClass="block px-4 py-2 text-gray-700 hover:text-red-600 hover:bg-gray-100 transition duration-200" />
+                    </li>
+
+                </ul>
             </div>
 
-            <!-- Navigation Items -->
-            <div class="flex items-center justify-between space-x-4">
-                <h:form styleClass="flex items-center space-x-4">
-                    <!-- User Profile -->
-                    <button type="button"
-                            class="flex items-center ml-7 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg p-2"
-                            onclick="toggleUserMenu()">
-                        <i class="fas fa-user"></i>
-                    </button>
-
-                    <!-- User Dropdown Menu -->
-                    <div id="userMenu"
-                         class="hidden absolute right-4 top-14 z-50 bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
-                        <ul class="py-2 text-sm text-gray-700">
-                            <li>
-                                <h:commandLink value="Profile" action="#{navigationBean.goToProfile}"
-                                               styleClass="block px-4 py-2 hover:bg-gray-100" />
-                            </li>
-                            <li>
-                                <h:commandLink value="Settings" action="#{navigationBean.goToSettings}"
-                                               styleClass="block px-4 py-2 hover:bg-gray-100" />
-                            </li>
-                            <li>
-                                <h:commandLink value="Logout" action="#{loginBean.logout}"
-                                               styleClass="block px-4 py-2 text-gray-700 hover:text-red-600 hover:bg-gray-100 transition duration-200" />
-                            </li>
-
-                        </ul>
-                    </div>
-                </h:form>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Main Content -->
-    <div style="margin-top: 100px">
-        <h:form>
-            <div class="flex justify-between items-center mb-8">
-                <h1 class="text-2xl font-bold">Sessions (#{sessionBean.sessions.size()})</h1>
-                <div class="flex items-center space-x-4">
-                    <button type="button"
-                            class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                            onclick="document.getElementById('sessionModal').classList.remove('hidden')">
-                        + Ajouter une nouvelle session
-                    </button>
-                </div>
-            </div>
-
-            <!-- Sessions Table -->
-            <div class="bg-white shadow-md rounded-lg overflow-hidden">
-                <h:dataTable value="#{sessionBean.sessions}" var="element"
-                             styleClass="table-auto w-full text-left border-collapse"
-                             headerClass="bg-gray-200 text-gray-800 px-4 py-2"
-                             rowClasses="bg-white px-4 py-2">
-
-                    <h:column>
-                        <f:facet name="header">Type</f:facet>
-                        <div class="px-4 py-2">#{element.type}</div>
-                    </h:column>
-
-                    <h:column>
-                        <f:facet name="header">Date de début</f:facet>
-                        <div class="px-4 py-2">#{element.startDate}</div>
-                    </h:column>
-
-                    <h:column>
-                        <f:facet name="header">Date de fin</f:facet>
-                        <div class="px-4 py-2">#{element.endDate}</div>
-                    </h:column>
-
-                    <h:column>
-                        <div class="flex gap-4 items-center justify-start px-4 py-2">
-                            <h:commandLink action="#{sessionBean.goToSessionDashboard(element.session_id)}"
-                                           styleClass="text-blue-500 hover:text-blue-700">
-                                <i class="fas fa-external-link-alt"></i>
-                            </h:commandLink>
-                            <h:commandLink action="#{sessionBean.loadSelectedSession(element)}"
-                                           styleClass="text-red-500 hover:text-red-700">
-                                <i class="fas fa-trash"></i>
-                                <f:ajax execute="@this" render="@none" onevent="handleDeleteButtonClick" />
-                            </h:commandLink>
-                        </div>
-                    </h:column>
-                </h:dataTable>
-            </div>
         </h:form>
+    </div>
+</div>
+</nav>
 
-        <!-- Add Session Modal -->
-        <div id="sessionModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
-            <div class="bg-white p-8 rounded-lg shadow-lg w-96">
-                <h2 class="text-xl font-bold mb-4">Créer une nouvelle session</h2>
-                <h:form>
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700">Type de session</label>
-                        <h:selectOneMenu value="#{sessionBean.type}"
-                                         styleClass="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-300">
-                            <f:selectItem itemValue="" itemLabel="-- Sélectionner le type --"/>
-                            <f:selectItem itemValue="Normal d'hiver" itemLabel="Normal d'hiver"/>
-                            <f:selectItem itemValue="Normal de printemps" itemLabel="Normal de printemps"/>
-                            <f:selectItem itemValue="Rattrapage d'hiver" itemLabel="Rattrapage d'hiver"/>
-                            <f:selectItem itemValue="Rattrapage de printemps" itemLabel="Rattrapage de printemps"/>
-                        </h:selectOneMenu>
-                    </div>
+<div class="container mx-auto px-4 pt-24">
+    <button id="openModalBtn" class="mb-4 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-200 flex items-center">
+        <i class="fas fa-plus mr-2"></i> Ajouter une nouvelle session
+    </button>
 
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700">Date de début</label>
-                        <h:inputText value="#{sessionBean.startDate}" type="date"
-                                     styleClass="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-300"/>
-                    </div>
+    <!-- Modal - Form -->
+    <div id="sessionModal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
+        <div class="w-full max-w-2xl bg-white shadow-lg rounded-lg p-8 relative">
+            <button id="closeModalBtn" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+            </button>
 
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700">Date de fin</label>
-                        <h:inputText value="#{sessionBean.endDate}" type="date"
-                                     styleClass="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-300"/>
-                    </div>
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">Créer une nouvelle session</h1>
 
-                    <div class="flex justify-end">
-                        <button type="button"
-                                class="bg-gray-500 text-white px-4 py-2 rounded mr-2 hover:bg-gray-600"
-                                onclick="document.getElementById('sessionModal').classList.add('hidden')">
-                            Annuler
-                        </button>
-                        <h:commandButton value="Créer"
-                                         action="#{sessionBean.saveSession}"
-                                         styleClass="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"/>
-                    </div>
-                </h:form>
-            </div>
-        </div>
-
-        <!-- Delete Confirmation Modal -->
-        <div id="deleteModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
-            <div class="bg-white p-8 rounded-lg shadow-lg w-96">
-                <h2 class="text-xl font-bold mb-4">Confirmer la suppression</h2>
-                <p class="text-gray-600 mb-6">Êtes-vous sûr de vouloir supprimer cette session ? Cette action ne peut pas être annulée.</p>
-                <div class="flex justify-end space-x-4">
-                    <button type="button"
-                            class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
-                            onclick="closeDeleteModal()">
-                        Annuler
-                    </button>
-                    <h:form>
-                        <h:commandButton value="Confirmer"
-                                         action="#{sessionBean.deleteSession(sessionBean.selectedSession)}"
-                                         styleClass="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"/>
-                    </h:form>
+            <h:form>
+                <!-- Type Dropdown -->
+                <div class="mb-4">
+                    <h:outputLabel for="type" value="Type de session:" class="block text-sm font-medium text-gray-700 mb-2"/>
+                    <h:selectOneMenu id="type" value="#{sessionBean.type}"
+                                     styleClass="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                        <f:selectItem itemValue="" itemLabel="-- Sélectionner le type --"/>
+                        <f:selectItem itemValue="Normal d'hiver" itemLabel="Normal d'hiver"/>
+                        <f:selectItem itemValue="Normal de printemps" itemLabel="Normal de printemps"/>
+                        <f:selectItem itemValue="Rattrapage d'hiver" itemLabel="Rattrapage d'hiver"/>
+                        <f:selectItem itemValue="Rattrapage de printemps" itemLabel="Rattrapage de printemps"/>
+                    </h:selectOneMenu>
                 </div>
+
+                <!-- Start Date -->
+                <div class="mb-4">
+                    <h:outputLabel for="startDate" value="Date de début:" class="block text-sm font-medium text-gray-700 mb-2"/>
+                    <h:inputText id="startDate" value="#{sessionBean.startDate}" type="date"
+                                 styleClass="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"/>
+                </div>
+
+                <!-- End Date -->
+                <div class="mb-4">
+                    <h:outputLabel for="endDate" value="Date de fin:" class="block text-sm font-medium text-gray-700 mb-2"/>
+                    <h:inputText id="endDate" value="#{sessionBean.endDate}" type="date"
+                                 styleClass="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"/>
+                </div>
+
+                <!-- Save Button -->
+                <div class="mt-6">
+                    <h:commandButton value="Enregistrer la session" action="#{sessionBean.saveSession}"
+                                     styleClass="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition duration-200"/>
+                </div>
+
+                <h:messages globalOnly="true"
+                            styleClass="mt-4 text-sm"
+                            infoClass="text-green-500"
+                            errorClass="text-red-500"
+                            fatalClass="text-red-700"
+                            warnClass="text-yellow-500"/>
+            </h:form>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
+        <div class="w-full max-w-md bg-white shadow-lg rounded-lg p-6 relative">
+            <button id="closeDeleteModalBtn" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700" onclick="closeDeleteModal();">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Confirmer la suppression</h2>
+            <p class="text-gray-600 mb-6">Êtes-vous sûr de vouloir supprimer cette session ? Cette action ne peut pas être annulée.</p>
+
+            <div class="flex justify-end space-x-4">
+                <button class="bg-gray-300 text-gray-800 py-2 px-4 rounded hover:bg-gray-400" onclick="closeDeleteModal();">
+                    Annuler
+                </button>
+                <h:form>
+                    <h:commandButton value="Confirmer" action="#{sessionBean.deleteSession(sessionBean.selectedSession)}"
+                                     styleClass="bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700">
+                    </h:commandButton>
+                </h:form>
             </div>
         </div>
     </div>
 
-    <script>
-        function toggleUserMenu() {
-            document.getElementById('userMenu').classList.toggle('hidden');
-        }
+    <!-- Sessions Table -->
+    <div class="bg-white shadow-md rounded-lg overflow-hidden">
+        <div class="flex justify-between items-center p-4 border-b">
+            <h2 class="text-xl font-bold text-gray-800">
+                Sessions (#{sessionBean.sessions.size()})
+            </h2>
+        </div>
+        <h:dataTable value="#{sessionBean.sessions}" var="element"
+                     styleClass="table-auto w-full text-left border-collapse"
+                     headerClass="bg-gray-200 text-gray-800 px-4 py-2"
+                     rowClasses="bg-white px-4 py-2">
+            <h:column>
+                <f:facet name="header">Type</f:facet>
+                <div class="px-4 py-2">#{element.type}</div>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Date de début</f:facet>
+                <div class="px-4 py-2">#{element.startDate}</div>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Date de fin</f:facet>
+                <div class="px-4 py-2">#{element.endDate}</div>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Actions</f:facet>
+                <h:form>
+                    <div class="flex space-x-3 px-4 py-3">
+                        <h:commandLink action="#{sessionBean.goToSessionDashboard(element.session_id)}"
+                                       styleClass="text-blue-500 hover:text-blue-700">
+                            <i class="fas fa-sign-in-alt"></i>
+                        </h:commandLink>
+                        <h:commandLink action="#{sessionBean.loadSelectedSession(element)}"
+                                       styleClass="text-red-500 hover:text-red-700">
+                            <i class="fas fa-trash"></i>
+                            <f:ajax execute="@this" render="@none" onevent="handleDeleteButtonClick" />
+                        </h:commandLink>
+                    </div>
+                </h:form>
+            </h:column>
+        </h:dataTable>
+    </div>
+</div>
 
-        function handleDeleteButtonClick(data) {
-            if (data.status === 'success') {
-                document.getElementById('deleteModal').classList.remove('hidden');
-            }
-        }
+<script>
+    function toggleUserMenu() {
+        document.getElementById('userMenu').classList.toggle('hidden');
+    }
 
-        function closeDeleteModal() {
-            document.getElementById('deleteModal').classList.add('hidden');
-        }
-    </script>
+    // Existing JavaScript remains the same
+    document.getElementById('openModalBtn').addEventListener('click', function() {
+        document.getElementById('sessionModal').classList.remove('hidden');
+        localStorage.setItem('isModalOpen', 'true');
+    });
 
-</h:body>
+    document.getElementById('closeModalBtn').addEventListener('click', function() {
+        document.getElementById('sessionModal').classList.add('hidden');
+        localStorage.removeItem('isModalOpen');
+    });
+
+    window.addEventListener('DOMContentLoaded', (event) => {
+        if (localStorage.getItem('isModalOpen') === 'true') {
+            document.getElementById('sessionModal').classList.remove('hidden');
+        }
+    });
+
+    function handleDeleteButtonClick(event) {
+        if (event.status === "success") {
+            openDeleteModal();
+        }
+    }
+
+    function openDeleteModal() {
+        document.getElementById("deleteModal").classList.remove("hidden");
+    }
+
+    function closeDeleteModal() {
+        document.getElementById('deleteModal').classList.add('hidden');
+        localStorage.removeItem('sessionIdToDelete');
+    }
+</script>
+
+</body>
 </html>

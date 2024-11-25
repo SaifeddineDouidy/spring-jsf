@@ -31,8 +31,6 @@ public class SessionBean implements Serializable {
     private SessionService sessionService;
 
 
-
-
     public Long getSession_id() {
         return session_id;
     }
