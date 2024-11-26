@@ -5,6 +5,17 @@
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
          version="6.0">
 
+  <!-- Configure error handling for 404 -->
+  <error-page>
+    <error-code>404</error-code>
+    <location>/error/404.xhtml</location>
+  </error-page>
+
+  <error-page>
+    <exception-type>java.lang.Throwable</exception-type>
+    <location>/error/500.xhtml</location>
+  </error-page>
+
   <!-- Spring Context Configuration -->
   <context-param>
     <param-name>contextConfigLocation</param-name>
@@ -30,7 +41,6 @@
     <servlet-name>Faces Servlet</servlet-name>
     <url-pattern>*.xhtml</url-pattern>
   </servlet-mapping>
-
 
   <!-- Weld Servlet Listener for CDI -->
   <listener>

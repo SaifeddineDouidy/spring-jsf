@@ -2,6 +2,7 @@ package com.example.beans;
 
 import com.example.model.Session;
 import com.example.service.SessionService;
+import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
@@ -13,7 +14,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Component("sessionBean")
-@ViewScoped
+@SessionScoped
 public class SessionBean implements Serializable {
 
     private static final long serialVersionUID = 1L;

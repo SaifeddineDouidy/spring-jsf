@@ -12,7 +12,9 @@
         <!-- Managed Entity Classes -->
         <class>com.example.model.User</class>
         <class>com.example.model.Session</class>
-
+        <class>com.example.model.Department</class>
+        <class>com.example.model.Local</class>
+        <class>com.example.model.Professor</class>
 
         <!-- Database Connection Properties -->
         <properties>
@@ -27,18 +29,9 @@
             <property name="hibernate.hbm2ddl.auto" value="update"/>
 
             <!-- HikariCP Connection Pooling -->
-            <property name="hibernate.c3p0.min_size" value="5" /> <!-- Remove C3P0 specific properties -->
+            <property name="hibernate.c3p0.min_size" value="5" />
             <property name="hibernate.c3p0.max_size" value="20" />
             <property name="hibernate.c3p0.timeout" value="300" />
-
-            <!-- HikariCP settings (Uncomment to use HikariCP) DOESNT WORK
-            <property name="hibernate.hikari.dataSourceClassName" value="com.mysql.cj.jdbc.MysqlDataSource"/>
-            <property name="hibernate.hikari.minimumIdle" value="5"/>
-            <property name="hibernate.hikari.maximumPoolSize" value="20"/>
-            <property name="hibernate.hikari.idleTimeout" value="30000"/>
-            <property name="hibernate.hikari.connectionTimeout" value="30000"/>
-            <property name="hibernate.hikari.maxLifetime" value="600000"/>
-            -->
 
             <!-- Hibernate SQL Logging -->
             <property name="hibernate.format_sql" value="true"/>

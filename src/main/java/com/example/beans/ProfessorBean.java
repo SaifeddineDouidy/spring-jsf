@@ -111,6 +111,14 @@ public class ProfessorBean implements Serializable {
         this.newProfessorDispense = newProfessorDispense;
     }
 
+    public int getProfessorCountByDepartment(Long departmentId) {
+        if (departmentId == null) {
+            return 0; // Handle null case, no department selected
+        }
+        return professorService.getProfessorCountByDepartment(departmentId);
+    }
+
+
     public void prepareModifyProfessor(Professor professor) {
         selectedProfessor.setId(professor.getId());
         selectedProfessor.setName(professor.getName());

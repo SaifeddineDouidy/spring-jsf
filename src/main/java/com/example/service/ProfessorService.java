@@ -16,6 +16,10 @@ public class ProfessorService {
         return professorRepository.findByDepartmentId(departmentId);
     }
 
+    public int getProfessorCountByDepartment(Long departmentId) {
+        return professorRepository.countByDepartmentId(departmentId);
+    }
+
     public void saveProfessor(Professor professor) {
         professorRepository.save(professor);
     }
