@@ -153,21 +153,21 @@
                     <f:facet name="header">
                         <div class="px-4 py-2">Actions</div>
                     </f:facet>
-                    <div class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-4">
+                    <div class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-3 flex items-center justify-end">
                         <!-- Update Icon -->
-                        <h:commandLink action="#{departmentBean.prepareModifyDepartment(department)}"
-                                       onclick="document.getElementById('modifyDepartmentModal').classList.remove('hidden');">
+                        <h:commandLink class="block px-4 py-2 text-indigo-500 hover:bg-indigo-100">
+                            <f:ajax listener="#{departmentBean.prepareModifyDepartment(department)}" render=":modifyDepartmentModal" onevent="handlePrepareUpdate" />
                             <i class="fas fa-edit text-blue-500 hover:text-blue-700"></i>
                         </h:commandLink>
 
                         <!-- Delete Icon -->
-                        <h:commandLink action="#{departmentBean.deleteDepartment(department)}"
-                                       class="delete-btn">
+                        <h:commandLink action="#{departmentBean.deleteDepartment(department)}" class="delete-btn">
                             <i class="fas fa-trash-alt text-red-500 hover:text-red-700"></i>
-                            <f:ajax execute="@this" render=":data-table"/>
+                            <f:ajax execute="@this" render=":data-table" />
                         </h:commandLink>
                     </div>
                 </h:column>
+
 
             </h:dataTable>
         </div>
@@ -247,6 +247,22 @@
 
     function toggleUserMenu() {
         document.getElementById('userMenu').classList.toggle('hidden');
+    }
+    function handlePrepareUpdate(data) {
+        if (data.status === 'success') {
+            document.getElementById('modifyDepartmentModal').classList.remove('hidden');
+        }
+    }
+
+    function closeUpdateModal() {
+        document.getElementById('modifyDepartmentModal').classList.add('hidden');
+    }
+
+    function handleUpdateResponse(data) {
+        if (data.status === 'complete') {
+            closeUpdateModal();
+            location.reload();
+        }
     }
 </script>
 </body>

@@ -168,8 +168,10 @@
                 </f:facet>
                 <div class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium flex space-x-4">
                     <!-- Update Icon -->
-                    <h:commandLink action="#{professorBean.prepareModifyProfessor(professor)}"
-                                   onclick="document.getElementById('modifyProfessorModal').classList.remove('hidden');">
+
+                    <h:commandLink
+                                   class="block px-4 py-2 text-indigo-500 hover:bg-indigo-100">
+                        <f:ajax listener="#{professorBean.prepareModifyProfessor(professor)}" render=":modifyProfessorModal" onevent="handlePrepareUpdate"/>
                         <i class="fas fa-edit text-blue-500 hover:text-blue-700"></i>
                     </h:commandLink>
 
@@ -298,6 +300,22 @@
 <script>
     function toggleUserMenu() {
         document.getElementById('userMenu').classList.toggle('hidden');
+    }
+    function handlePrepareUpdate(data) {
+        if (data.status === 'success') {
+            document.getElementById('modifyProfessorModal').classList.remove('hidden');
+        }
+    }
+
+    function closeUpdateModal() {
+        document.getElementById('modifyProfessorModal').classList.add('hidden');
+    }
+
+    function handleUpdateResponse(data) {
+        if (data.status === 'complete') {
+            closeUpdateModal();
+            location.reload();
+        }
     }
 </script>
 </body>

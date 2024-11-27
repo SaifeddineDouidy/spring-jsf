@@ -67,7 +67,7 @@ public class DepartmentBean implements Serializable {
         newDepartmentName = department.getDepartmentName();
     }
 
-    public void updateDepartment() {
+    public void modifyDepartment() {
         if (selectedDepartment != null && newDepartmentName != null && !newDepartmentName.trim().isEmpty()) {
             selectedDepartment.setDepartmentName(newDepartmentName);
             departmentService.updateDepartment(selectedDepartment);
